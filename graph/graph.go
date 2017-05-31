@@ -2,7 +2,7 @@ package graph
 
 import (
 	"github.com/gonum/matrix/mat64"
-	"github.com/jamesneve/go-mcl/mcl"
+	"github.com/jamesneve/go-markov-cluster/mcl"
 )
 
 type Graph struct {
