@@ -36,10 +36,26 @@ func (g *Graph) clearSeenBefore() {
 	}
 }
 
-func (g *Graph) GetClusters(p, i, l int) {
+func (g *Graph) GetClusters(p, i, l int) (*[][]string, error) {
 	m := g.MakeAdjacencyMatrix()
 	markovClusters := mcl.NewMCL(p, i, l)
-	markovClusters.GenerateClusters(m)
+	c, err := markovClusters.GenerateClusters(m)
+
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([][]string, 0, len(*c))
+
+	for _, cluster := range *c {
+		r := make([]string, 0, len(cluster))
+		for _, i := range cluster {
+			r = append(r, g.Nodes[i].Label)
+		}
+		results = append(results, r)
+	}
+
+	return &results, nil
 }
 
 func (g *Graph) MakeAdjacencyMatrix() *mat64.Dense {
